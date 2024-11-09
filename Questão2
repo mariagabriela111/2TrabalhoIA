@@ -1,0 +1,33 @@
+% Maria Gabriela Morais de Sá - 22250537
+% Valores escolhidos de forma arbitrária
+% Definindo a probabilidade das condições da rua
+0.3::str(dry).
+0.5::str(wet).
+0.2::str(snow_covered).
+
+% Probabilidade do volante do dínamo desgastado
+0.6::flw(true).
+0.4::flw(false).
+
+% Probabilidade do dínamo deslizante, dependendo do estado do volante
+0.7::r(true) :- flw(false).
+0.1::r(true) :- flw(true).
+0.3::r(false) :- flw(false).
+
+% Probabilidade de voltagem (V) no dínamo, dependendo da condição da rua e do estado do dínamo
+0.8::v(true) :- r(true), str(dry).
+0.5::v(true) :- r(true), str(wet).
+0.2::v(true) :- r(true), str(snow_covered).
+0.0::v(true) :- r(false).
+
+% Probabilidade da lâmpada e do cabo estarem em bom estado
+0.9::b(true).
+0.95::k(true).
+
+% Probabilidade da luz estar ligada (Li) dependendo de V, B, e K
+0.99::li(true) :- v(true), b(true), k(true).
+0.0::li(true) :- \+v(true).
+
+% Consulta para calcular a probabilidade condicional P(V | Str = snow_covered)
+query(v(true)).
+evidence(str(snow_covered)).
